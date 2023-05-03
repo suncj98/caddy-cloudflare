@@ -1,7 +1,8 @@
-FROM golang:1.20.3 as builder
-RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-RUN xcaddy build --output /caddy --with github.com/caddy-dns/cloudflare
-RUN chmod +x /caddy
+FROM caddy:2.6.4-builder AS builder
 
-FROM caddy:latest
-COPY --from=builder /caddy /usr/bin/caddy
+RUN xcaddy build \
+    --with github.com/caddy-dns/cloudflare
+
+FROM caddy:2.6.4
+
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
