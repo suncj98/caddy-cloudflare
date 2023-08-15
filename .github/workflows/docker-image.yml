@@ -3,6 +3,9 @@ name: Docker Image CI
 on:
   workflow_dispatch:
 
+env:
+  CADDY_VERSION: 2.7.3
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,4 +26,5 @@ jobs:
         with:
           push: true
           platforms: linux/amd64
-          tags: suncj98/caddy-cloudflare:latest
+          build-args: CADDY_VERSION=${{ env.CADDY_VERSION }}
+          tags: suncj98/caddy-cloudflare:latest,suncj98/caddy-cloudflare:${{ env.CADDY_VERSION }}
